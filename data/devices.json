@@ -1,0 +1,4 @@
+{
+  "heater-1": {"id": "heater-1", "state": "off", "last_updated": null},
+  "fan-1": {"id": "fan-1", "state": "off", "last_updated": null}
+}
