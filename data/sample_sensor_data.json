@@ -1,0 +1,6 @@
+[
+  {"sensor_id": "temp-1", "type": "temperature", "value": 22.4, "timestamp": "2025-09-09T09:00:00Z"},
+  {"sensor_id": "temp-1", "type": "temperature", "value": 22.7, "timestamp": "2025-09-09T09:01:00Z"},
+  {"sensor_id": "motion-1", "type": "motion", "value": 0, "timestamp": "2025-09-09T09:01:30Z"},
+  {"sensor_id": "temp-1", "type": "temperature", "value": 45.2, "timestamp": "2025-09-09T09:05:00Z"}
+]
