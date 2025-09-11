@@ -4,6 +4,243 @@ I'll start with a short list of **assumptions**, then show the **directory tree*
 
 ---
 
+Absolutely! Let’s break your **IoT + ML + RPA + GPT-OSS project** into **step-by-step execution steps** so you have a precise guide from setup to testing. I’ll outline **correct, sequential steps** for your hackathon project.
+
+---
+
+# Step-by-Step Guide for IoT + ML + RPA Project
+
+---
+
+## **Step 1: Clone / Setup Project**
+
+1. Clone your project repository (or copy files) into a local folder:
+
+```bash
+git clone <your_repo_url>
+cd <project_folder>
+```
+
+2. Ensure your folder structure matches the one described in the documentation:
+
+```
+src/
+  app/
+    main.py
+    api.py
+    db.py
+    devices.py
+    ml/
+      detector.py
+      trainer.py
+      gpt_oss_adapter.py
+    rpa/
+      rpa_engine.py
+    dashboard/
+      templates/
+      static/
+  sensors/
+    simulator.py
+scripts/
+tests/
+data/
+```
+
+---
+
+## **Step 2: Setup Python Environment**
+
+1. Create and activate a virtual environment:
+
+```bash
+python3.11 -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+```
+
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+> ✅ Dependencies include FastAPI, SQLite, scikit-learn, Pydantic, Uvicorn, and any others needed for GPT-OSS adapter.
+
+---
+
+## **Step 3: Initialize Database and ML Model**
+
+1. Initialize the SQLite database (if not done automatically on server start):
+
+```bash
+python src/app/db.py
+```
+
+2. Train or generate a synthetic IsolationForest model (if no model exists):
+
+```bash
+python src/app/ml/trainer.py
+```
+
+> This ensures ML anomaly detection works correctly.
+
+---
+
+## **Step 4: Start FastAPI Server**
+
+1. Launch the FastAPI server:
+
+```bash
+uvicorn src.app.main:app --reload
+```
+
+2. Verify server is running:
+
+* Dashboard URL: [http://localhost:8000](http://localhost:8000)
+* API endpoints:
+
+  * `POST /sensor` → submit sensor events
+  * `GET /events` → view recent events
+  * `GET /devices` → view current device states
+
+---
+
+## **Step 5: Run Sensor Simulator (Optional / Testing)**
+
+1. Simulate sensor events:
+
+```bash
+python src/sensors/simulator.py --count 10 --type temperature
+```
+
+2. Parameters:
+
+* `--count` → number of events to generate
+* `--type` → sensor type (`temperature` or `motion`)
+
+3. The simulator sends `POST /sensor` requests to the API.
+
+---
+
+## **Step 6: ML Detection & GPT-OSS Reasoning**
+
+1. When a sensor event is received:
+
+* ML Detector (`detector.py`) computes anomaly score.
+* GPT-OSS Adapter (`gpt_oss_adapter.py`) provides human-readable reasoning.
+
+2. Behavior:
+
+* If `USE_GPT_OSS=false` → Mock reasoning is returned.
+* If `USE_GPT_OSS=true` → Local GPT-OSS model is used.
+
+---
+
+## **Step 7: Trigger RPA Actions**
+
+1. If ML detects anomaly:
+
+* RPA Engine (`rpa_engine.py`) executes safe actions:
+
+  * Toggle device state in `devices.json`
+  * Run safe scripts in `scripts/` folder
+
+2. Logs are saved in `rpa.log`.
+
+---
+
+## **Step 8: View Dashboard & Events**
+
+1. Access the dashboard: [http://localhost:8000](http://localhost:8000)
+
+2. Dashboard displays:
+
+* **Devices**: Current state (on/off) and last updated time.
+* **Events**: Last 100 sensor events with anomaly, ML score, GPT reasoning, and RPA actions.
+
+3. API can also be used to fetch events:
+
+```bash
+curl http://localhost:8000/events
+curl http://localhost:8000/devices
+```
+
+---
+
+## **Step 9: Optional GPT-OSS Setup**
+
+1. If you want real GPT-OSS reasoning:
+
+```bash
+export USE_GPT_OSS=true
+export MODEL_DIR=/path/to/local/gpt-oss-model
+```
+
+2. Restart the FastAPI server for changes to take effect.
+
+---
+
+## **Step 10: Testing**
+
+1. Run **unit tests**:
+
+```bash
+pytest src/tests/test_detector.py
+pytest src/tests/test_gpt_adapter.py
+```
+
+2. Run **integration tests** (full workflow):
+
+```bash
+pytest src/tests/test_integration.py
+```
+
+3. Expected results:
+
+* ML anomaly detection works as expected.
+* GPT reasoning is returned (mocked or real).
+* RPA actions toggle devices or execute scripts.
+* Dashboard reflects updated device states and events.
+
+---
+
+## **Step 11: Hackathon Demo**
+
+1. Start FastAPI server.
+2. Launch simulator to create sensor events.
+3. Observe dashboard updates in real-time.
+4. Show:
+
+* Normal events → no RPA action.
+* Anomalous events → device toggles / script execution.
+* GPT reasoning for each anomaly.
+
+5. Optional: Demonstrate GPT-OSS real reasoning if GPU / local model available.
+
+---
+
+## ✅ **Step 12: Optional Extensions**
+
+* Connect to real IoT devices (MQTT / Home Assistant)
+* Add React-based interactive dashboard
+* Chain multi-step GPT reasoning → RPA automation
+* Implement authentication and audit logging for production safety
+
+---
+
+This step-by-step sequence ensures:
+
+1. **Project setup** is clean and reproducible.
+2. **Data flows correctly** from sensor → ML → GPT → RPA → Dashboard.
+3. **Testing and demo** are simple and hackathon-ready.
+
+---
+
+If you want, I can also **draw a precise visual diagram with arrows for each of these steps**, showing how **sensor data flows through ML, GPT-OSS, and RPA to the dashboard**, which is perfect for hackathon presentation slides.
+
+Do you want me to create that diagram next?
+
+
 # Assumptions (explicit)
 
 1. You may **not** have a physical Raspberry Pi. All sensors are **simulated** (sensor simulator POSTs data).
