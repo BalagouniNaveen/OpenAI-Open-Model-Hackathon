@@ -3,6 +3,62 @@ Absolutely! I can prepare a **step-by-step, file-by-file documentation** for you
 ---
 
 # IoT + ML + RPA Hackathon Project Documentation
+IoT + ML + RPA Project Architecture Diagram
++-----------------+
+|   Sensors /     |
+|   Simulator     |
++--------+--------+
+         |
+         | POST /sensor
+         v
++-----------------+
+|   FastAPI API   |
+|  (src/app/api.py)|
++--------+--------+
+         |
+         v
++-----------------+
+|  SQLite DB      |
+|  (src/app/db.py)|
++--------+--------+
+         |
+         v
++------------------------+
+| ML Detector            |
+| (IsolationForest)      |
+| src/app/ml/detector.py |
++--------+--------+
+         |
+         v
++------------------------+
+| GPT-OSS Adapter        |
+| src/app/ml/gpt_oss_    |
+| adapter.py             |
+| - Provides reasoning   |
++--------+--------+
+         |
+         v
++------------------------+
+| RPA Engine             |
+| src/app/rpa/rpa_engine.py
+| - Toggle devices       |
+| - Run safe scripts     |
++--------+--------+
+         |
+         v
++-----------------+      +------------------+
+| Devices JSON    |      | Logs (rpa.log)   |
+| src/app/devices.py     |                  |
++-----------------+      +------------------+
+         |
+         v
++-----------------+
+| Dashboard       |
+| src/app/dashboard|
+| - /devices      |
+| - /events       |
++-----------------+
+
 
 ## Project Overview
 
