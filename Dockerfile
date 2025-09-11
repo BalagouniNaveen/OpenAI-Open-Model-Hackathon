@@ -8,12 +8,9 @@ ENV PYTHONUNBUFFERED=1
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# create app structure
 COPY . /app
 
-# create data dir
-RUN mkdir -p /data
-RUN chown -R 1000:1000 /data || true
+RUN mkdir -p /data && chmod -R 755 /app/scripts || true
 
 EXPOSE 8000
 
